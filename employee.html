@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../favicon.ico">-->
+
+    <title>Employee Complaint</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body style="display:none">
+<section style="background:#efefe9;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="board">
+                <div class="board-inner">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <div class="liner"></div>
+                        <li class="active">
+                            <a href="#complaint-history" data-toggle="tab" title="Complaint-History">
+                                <span class="round-tabs one">
+                                    <i class="glyphicon glyphicon-check"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#add-new" data-toggle="tab" title="Add New">
+                                <span class="round-tabs three">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#new-user" data-toggle="tab" title="New User">
+                                <span class="round-tabs two">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#settings" data-toggle="tab" title="Settings">
+                                <span class="round-tabs four">
+                                    <i class="glyphicon glyphicon-cog"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" title="Sign Out" onclick="signout()">
+                                <span class="round-tabs five">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="complaint-history">
+                        <div class="container">
+                            <h3 class="head">Complaint History</h3>
+                            <div class="tab">
+                                <ul class="nav nav-pills">
+                                    <li role="presentation" class="active"><a data-toggle="tab"
+                                                                              href="#pending">Pending</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#approved">Approved</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#rejected">Rejected</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#search">Search</a></li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane in active" id="pending">
+                                    <h2 class="head">Pending Complaints</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="pending-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Ref No</th>
+                                                <th>Date</th>
+                                                <th>NIC</th>
+                                                <th>Name</th>
+                                                <th>GS Division</th>
+                                                <th>Phone No</th>
+                                                <th>Category of grievance</th>
+                                                <th>Significance</th>
+                                                <th>Action taken by</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="approved">
+                                    <h2 class="head">Approved Complaints</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="approved-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Ref No</th>
+                                                <th>Date</th>
+                                                <th>NIC</th>
+                                                <th>Name</th>
+                                                <th>GS Division</th>
+                                                <th>Phone No</th>
+                                                <th>Category of grievance</th>
+                                                <th>Significance</th>
+                                                <th>Action taken by</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="rejected">
+                                    <h2 class="head">Rejected Complaints</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="rejected-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Ref No</th>
+                                                <th>Date</th>
+                                                <th>NIC</th>
+                                                <th>Name</th>
+                                                <th>GS Division</th>
+                                                <th>Phone No</th>
+                                                <th>Category of grievance</th>
+                                                <th>Significance</th>
+                                                <th>Action taken by</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="search">
+                                    <h2 class="head">Search Complaints</h2>
+                                    <form action="" id="search-complaints">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Project Name</label>
+                                                    <select name="sc-project-name" class="form-control">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Search" class="btn btn-info">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="search-result">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="result-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Project Name</th>
+                                                    <th>Ref No</th>
+                                                    <th>Date</th>
+                                                    <th>NIC</th>
+                                                    <th>Name</th>
+                                                    <th>GS Division</th>
+                                                    <th>Phone No</th>
+                                                    <th>Category of grievance</th>
+                                                    <th>Significance</th>
+                                                    <th>Action taken by</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="add-new">
+                        <div class="container">
+                            <h3 class="head">Select One to create</h3>
+                            <div class="tab">
+                                <ul class="nav nav-pills">
+                                    <li role="presentation" class="active"><a data-toggle="tab" href="#new-complaint">Complaint</a>
+                                    </li>
+                                    <li role="presentation"><a data-toggle="tab" href="#new-project">Project</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#new-gr-category">Grievance
+                                        Category</a></li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane in active" id="new-complaint">
+                                    <h2 class="head">New Complaint</h2>
+                                    <div class="entry-form">
+                                        <form id="new-complaint-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Project Name</label>
+                                                        <select name="nc-project-name" class="form-control"
+                                                                required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Ref: No</label>
+                                                        <input type="text" class="form-control" name="nc-ref-no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="date" class="form-control" name="nc-date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Name</label>
+                                                        <input type="text" class="form-control" name="nc-name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Address</label>
+                                                        <textarea class="form-control" cols="30" rows="4"
+                                                                  name="nc-address"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>G.S. Division</label>
+                                                        <input type="text" class="form-control" name="nc-gs-division">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Phone No</label>
+                                                        <input type="text" class="form-control" name="nc-phone-no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>NIC No</label>
+                                                        <input type="text" class="form-control" name="nc-nic-no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Nature of grievance</label>
+                                                        <input type="text" name="nc-nature-grievance"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Significance</label>
+                                                        <select class="form-control" name="nc-significance">
+                                                            <option value="NR">No Risk</option>
+                                                            <option value="LR">Low Risk</option>
+                                                            <option value="HR">High Risk</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Category of grievance</label>
+                                                        <select name="nc-grievance" class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Action taken by</label>
+                                                        <select class="form-control" name="nc-action-taken-by">
+                                                            <option value="NON">None</option>
+                                                            <option value="RDA">RDA</option>
+                                                            <option value="CON">Consultant</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Action / Response / Remody</label>
+                                                        <textarea class="form-control" cols="30" rows="5"
+                                                                  name="nc-action">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Reported</label>
+                                                        <input type="date" class="form-control" name="nc-date-reported">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Upload a Photo</label>
+                                                        <input type="file" accept="image/*" class="form-control"
+                                                               name="nc-photo" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="submit"
+                                                           class="btn btn-success btn-outline-rounded pull-right">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="new-project">
+                                    <h2 class="head">Create New Project</h2>
+                                    <div class="project-form">
+                                        <form action="" id="new-project-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Project Name</label>
+                                                        <input type="text" class="form-control" name="new-project-name"
+                                                               required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>PD Name</label>
+                                                        <input type="text" class="form-control" name="new-pd-name"
+                                                               required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>DPD Name</label>
+                                                        <input type="text" class="form-control" name="new-dpd-name"
+                                                               required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="submit"
+                                                               class="btn btn-success btn-outline-rounded pull-left">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <h2 class="head">Assign & View Consultants and Contractors</h2>
+                                    <div>
+                                        <a href="project-assign.html" class="btn btn-info btn-outline-rounded"
+                                           target="_blank">Assign & View</a>
+                                    </div>
+                                    <h2 class="head">Projects</h2>
+                                    <div class="table-div">
+                                        <table class="table table-responsive" id="project-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>PD Name</th>
+                                                <th>DPD Name</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="new-gr-category">
+                                    <h2 class="head">Create New Complaint Category</h2>
+                                    <div class="form">
+                                        <form action="" id="new-grievance-category-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Category Name</label>
+                                                        <input type="text" class="form-control"
+                                                               name="new-grievance-name" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="submit"
+                                                               class="btn btn-success btn-outline-rounded pull-right">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="table-div">
+                                        <table class="table table-responsive" id="cat-gr-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Complaint Category</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="new-user">
+                        <div class="container">
+                            <h2 class="head">Create New User</h2>
+                            <div class="form">
+                                <form action="" id="new-user-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" name="nu-name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>NIC No</label>
+                                                <input type="text" class="form-control" name="nu-nic">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <textarea class="form-control" rows="4" name="nu-address">
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Moblie Number</label>
+                                                <input type="text" class="form-control" name="nu-mobile-no">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Designation</label>
+                                                <select class="form-control" name="nu-designation">
+                                                    <option value="CONSU">Consultant</option>
+                                                    <option value="CONTR">Contractor</option>
+                                                    <option value="ADMIN">Admin</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" class="form-control" name="nu-email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Password</label>
+                                                <input type="password" class="form-control" name="nu-password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="submit"
+                                                       class="btn btn-success btn-outline-rounded pull-right">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <h2 class="head">Users</h2>
+                            <div class="table-div">
+                                <table class="table table-responsive" id="user-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>NIC</th>
+                                        <th>Address</th>
+                                        <th>Mobile</th>
+                                        <th>Designation</th>
+                                        <th>Email</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="settings">
+                        <div class="container">
+                            <h2 class="head">Change Your password</h2>
+                            <div class="form">
+                                <form action="#" id="acccount-settings-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>New Password</label>
+                                                <input type="password" class="form-control" name="ac_new_pw">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Confirm Password</label>
+                                                <input type="password" class="form-control" name="ac_conf_pw">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="submit"
+                                                       class="btn btn-success btn-outline-rounded pull-right"
+                                                       value="Change">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- More Details Form Modal -->
+<div id="more-details-form" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Reject Employee Form</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <input type="text" class="form-control" name="project-name" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Ref: No</label>
+                            <input type="text" class="form-control" name="ref-no" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="text" class="form-control" name="date" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name" readonly>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea class="form-control" cols="30" rows="5"
+                                      name="address" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>G.S. Division</label>
+                                    <input type="text" class="form-control" name="gs-division" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phone No</label>
+                                    <input type="text" class="form-control" name="phone-no" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>NIC No</label>
+                            <input type="text" class="form-control" name="nic-no" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nature of Grievance</label>
+                            <input type="text" class="form-control" name="nature-of-grievance" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Category of grievance</label>
+                            <input type="text" class="form-control" name="cat-grievance" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Significance</label>
+                            <input type="text" class="form-control" name="significance" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Action taken by</label>
+                                    <input type="text" class="form-control" name="action-taken-by" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Date Reported</label>
+                                    <input type="date" class="form-control" name="date-reported" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Action / Response / Remody</label>
+                            <textarea class="form-control" cols="30" rows="5"
+                                      name="action" readonly>
+                                                        </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Photos Uploaded By RDA</label>
+                            <a href="" target="_blank" class="btn btn-sm btn-info" name="employee-link">View</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Consultant Solution</label>
+                            <textarea class="form-control" cols="30" rows="5"
+                                      name="cons-solution" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Contractor Solution</label>
+                            <textarea class="form-control" cols="30" rows="5"
+                                      name="cont-solution" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Photos Uploaded By Consultant</label>
+                            <a href="" target="_blank" class="btn btn-sm btn-info" name="consultant-link">View</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Photos Uploaded By Contractor</label>
+                            <a href="" target="_blank" class="btn btn-sm btn-info" name="contractor-link">View</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="approved-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Reported</label>
+                                <input type="date" class="form-control" name="date-reported" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Closed</label>
+                                <input type="date" class="form-control" name="date-closed" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Further Action Recommended</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="further-action" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Action Taken Reported to the Complainer</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="action-taken" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rejected-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Reason To Reject</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="reason-to-reject" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-danger btn-outline-rounded pull-right"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approved Form Modal -->
+<div id="approved-form" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Approved Employee Form</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" id="approved-complaint-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input type="text" class="form-control" name="project-name" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ref: No</label>
+                                <input type="text" class="form-control" name="ref-no" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="text" class="form-control" name="date" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" name="name" readonly>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="address" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>G.S. Division</label>
+                                        <input type="text" class="form-control" name="gs-division" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone No</label>
+                                        <input type="text" class="form-control" name="phone-no" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>NIC No</label>
+                                <input type="text" class="form-control" name="nic-no" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nature of Grievance</label>
+                                <input type="text" class="form-control" name="nature-of-grievance" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Category of grievance</label>
+                                <input type="text" class="form-control" name="cat-grievance" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Significance</label>
+                                <input type="text" class="form-control" name="significance" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Action taken by</label>
+                                        <input type="text" class="form-control" name="action-taken-by" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Date Reported</label>
+                                        <input type="date" class="form-control" name="date-reported" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Action / Response / Remody</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="action" readonly>
+                                                        </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Photos Uploaded By RDA</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="employee-link">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Consultant Solution</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="cons-solution" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contractor Solution</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="cont-solution" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Photos Uploaded By Consultant</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="consultant-link">View</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Photos Uploaded By Contractor</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="contractor-link">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Reported</label>
+                                <input type="date" class="form-control" name="ap-date-reported">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Closed</label>
+                                <input type="date" class="form-control" name="ap-date-closed">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Further Action Recommended</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="ap-further-action"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Action Taken Reported to the Complainer</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="ap-action-taken"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit"
+                                   class="btn btn-success btn-outline-rounded pull-right">
+                            <button type="button" class="btn btn-danger btn-outline-rounded pull-right"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Form Modal -->
+<div id="reject-form" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Reject Employee Form</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" id="reject-complaint-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input type="text" class="form-control" name="project-name" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ref: No</label>
+                                <input type="text" class="form-control" name="ref-no" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="text" class="form-control" name="date" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" name="name" readonly>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="address" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>G.S. Division</label>
+                                        <input type="text" class="form-control" name="gs-division" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone No</label>
+                                        <input type="text" class="form-control" name="phone-no" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>NIC No</label>
+                                <input type="text" class="form-control" name="nic-no" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nature of Grievance</label>
+                                <input type="text" class="form-control" name="nature-of-grievance" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Category of grievance</label>
+                                <input type="text" class="form-control" name="cat-grievance" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Significance</label>
+                                <input type="text" class="form-control" name="significance" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Action taken by</label>
+                                        <input type="text" class="form-control" name="action-taken-by" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Date Reported</label>
+                                        <input type="date" class="form-control" name="date-reported" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Action / Response / Remody</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="action" readonly>
+                                                        </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Photos Uploaded By RDA</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="employee-link">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Consultant Solution</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="cons-solution" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contractor Solution</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="cont-solution" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Photos Uploaded By Consultant</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="consultant-link">View</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Photos Uploaded By Contractor</label>
+                                <a href="" target="_blank" class="btn btn-sm btn-info" name="contractor-link">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Reason to Reject</label>
+                                <textarea class="form-control" cols="30" rows="5"
+                                          name="rj-reason"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit"
+                                   class="btn btn-success btn-outline-rounded pull-right">
+                            <button type="button" class="btn btn-danger btn-outline-rounded pull-right"
+                                    data-dismiss="modal" name="rj-close">Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/employee.js"></script>
+
+</body>
+</html>
