@@ -50,7 +50,6 @@ $('[name=project-name]').on('change', function () {
     loadProjectAssignTable();
 });
 
-
 function loadUser() {
     $('[name=name]').trigger("change");
 }

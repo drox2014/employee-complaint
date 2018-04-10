@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>README.md</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>
+    <a id="user-content-workflow-simulator" class="anchor" href="#workflow-simulator" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Workflow Simulator</h1>
+<p>A clould service and a npm module is to monitor the state changes of chained task in real-time. It also provides an
+    interface to connect with the cloud service which is hosted on <a href="http://workflow-simulator.herokuapp.com/"
+                                                                      rel="nofollow">http://workflow-simulator.herokuapp.com/</a>.
+</p>
+<blockquote>
+    An account created on our cloud service will be required to perform the following tasks.
+</blockquote>
+<h2>
+    <a id="user-content-installing" class="anchor" href="#installing" aria-hidden="true"><span aria-hidden="true"
+                                                                                               class="octicon octicon-link"></span></a>Installing
+</h2>
+<p>WorkflowSimulator runs on Node.js and is available as an NPM package. You can install WorkflowSimulator in your
+    project's directory as usual:</p>
+<pre><code>npm install --save workflow-simulator
+</code></pre>
+<h2>
+    <a id="user-content-usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true"
+                                                                                     class="octicon octicon-link"></span></a>Usage
+</h2>
+<h3>
+    <a id="user-content-initializing-the-connection" class="anchor" href="#initializing-the-connection"
+       aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initializing the connection
+</h3>
+<p>First, you need to initialize an object of WSClient in order to establish a connection with the cloud service. You
+    should have permission to initialize the connection.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> { <span class="pl-c1">WSClient</span> } <span
+        class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>workflow-simulator<span
+        class="pl-pds">"</span></span>);
+
+<span class="pl-k">const</span> <span class="pl-c1">client</span> <span class="pl-k">=</span> <span
+            class="pl-k">new</span> <span class="pl-en">WSClient</span>({
+    host<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>-- url to cloud service --<span
+            class="pl-pds">"</span></span>,
+    secretKey<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>-- secret key --<span
+            class="pl-pds">"</span></span>,
+    groupId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>-- identifier of the task group --<span
+            class="pl-pds">"</span></span>
+});</pre>
+</div>
+<h3>
+    <a id="user-content-listening-to-events" class="anchor" href="#listening-to-events" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Listening to events</h3>
+<p>You can listen to events such as connect and disconnect using the initialized client.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c"><span class="pl-c">//</span> connect</span>
+<span class="pl-smi">client</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>connect<span
+            class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+    <span class="pl-c"><span class="pl-c">//</span> triggered when the connection is established with the cloud service</span>
+});
+
+<span class="pl-c"><span class="pl-c">//</span> disconnect</span>
+<span class="pl-smi">client</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>disconnect<span
+            class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+    <span class="pl-c"><span
+            class="pl-c">//</span> triggered when the connection is closed with the cloud service</span>
+});</pre>
+</div>
+<h3>
+    <a id="user-content-add-a-listener" class="anchor" href="#add-a-listener" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Add a listener</h3>
+<p>You can listen to the state changes, errors, and messages which is related to the chained task mentioned when
+    initializing the WSClient.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">client</span>.<span
+        class="pl-en">addListener</span>((<span class="pl-smi">error</span>, <span class="pl-smi">message</span>) <span
+        class="pl-k">=&gt;</span> {
+    <span class="pl-k">if</span> (error) {
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(error);
+    }
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(message);
+}, (<span class="pl-smi">err</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    <span class="pl-smi">client</span>.<span class="pl-c1">close</span>();
+});</pre>
+</div>
+<h3>
+    <a id="user-content-create-a-subroutine-in-the-chained-task" class="anchor"
+       href="#create-a-subroutine-in-the-chained-task" aria-hidden="true"><span aria-hidden="true"
+                                                                                class="octicon octicon-link"></span></a>Create
+    a subroutine in the chained task</h3>
+<p>Subroutines or tasks can be add to the chained task using the initialized client as follows.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">client</span>.<span class="pl-en">createTask</span>({
+    taskId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>T009<span class="pl-pds">"</span></span>,
+    groupId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>G001<span class="pl-pds">"</span></span>,
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Test<span
+            class="pl-pds">"</span></span>,
+    description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Test<span
+            class="pl-pds">"</span></span>,
+    progress<span class="pl-k">:</span> <span class="pl-c1">0</span>,
+    predecessors<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>T003<span
+            class="pl-pds">"</span></span>]
+}, (<span class="pl-smi">err</span>, <span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">if</span>(err){
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    }
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);
+});</pre>
+</div>
+<h3>
+    <a id="user-content-update-the-progress-of-a-task-or-a-subroutine" class="anchor"
+       href="#update-the-progress-of-a-task-or-a-subroutine" aria-hidden="true"><span aria-hidden="true"
+                                                                                      class="octicon octicon-link"></span></a>update
+    the progress of a task or a subroutine</h3>
+<p>The state changes occurred when the progress of a task or a subroutine is updated. You also notify the all clients
+    when a state is changed.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">client</span>.<span
+        class="pl-en">updateProgress</span>({
+    taskId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>T002<span class="pl-pds">"</span></span>,
+    groupId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>G001<span class="pl-pds">"</span></span>,
+    progress<span class="pl-k">:</span> <span class="pl-c1">10</span>
+}, (<span class="pl-smi">err</span>, <span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">if</span>(err){
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    }
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);
+});</pre>
+</div>
+<h3>
+    <a id="user-content-notify-an-error" class="anchor" href="#notify-an-error" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Notify an error</h3>
+<p>When a subroutine is executed, errors may occur and it is requires to notify all the client about the error.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">client</span>.<span
+        class="pl-en">notifyError</span>({
+    timestamp<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">Date</span>().<span
+            class="pl-c1">getTime</span>(),
+    groupId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>G001<span class="pl-pds">"</span></span>,
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Info<span
+            class="pl-pds">"</span></span>,
+    message<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Test Message<span class="pl-pds">"</span></span>
+}, (<span class="pl-smi">err</span>, <span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">if</span>(err){
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    }
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);
+});</pre>
+</div>
+<h3>
+    <a id="user-content-get-all-the-tasks-or-subroutines" class="anchor" href="#get-all-the-tasks-or-subroutines"
+       aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get all the tasks or
+    subroutines</h3>
+<p>You can get the details of all the task in the chained tasks as follows.</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">client</span>.<span
+        class="pl-en">getAllTasks</span>((<span class="pl-smi">err</span>,
+<span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">if</span>(err){
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    }
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);
+});</pre>
+</div>
+<h3>
+    <a id="user-content-advanced-guides-and-docs" class="anchor" href="#advanced-guides-and-docs"
+       aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced guides and docs</h3>
+<p>You can refer the API on /* url */ for more details</p>
+
+</body>
+</html>

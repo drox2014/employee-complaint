@@ -27,7 +27,7 @@
                     <ul class="nav nav-tabs" id="myTab">
                         <div class="liner"></div>
                         <li class="active">
-                            <a href="#complaint-history" data-toggle="tab" title="Complaint-History">
+                            <a href="#complaint-history" data-toggle="tab" title="Public Complaint">
                                 <span class="round-tabs one">
                                     <i class="glyphicon glyphicon-check"></i>
                                 </span>
@@ -67,14 +67,15 @@
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="complaint-history">
                         <div class="container">
-                            <h3 class="head">Complaint History</h3>
+                            <h3 class="head">Public Complaint</h3>
                             <div class="tab">
                                 <ul class="nav nav-pills">
                                     <li role="presentation" class="active"><a data-toggle="tab"
                                                                               href="#pending">Pending</a></li>
-                                    <li role="presentation"><a data-toggle="tab" href="#approved">Approved</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#approve-reject">Accept/Reject</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#approved">Accepted</a></li>
                                     <li role="presentation"><a data-toggle="tab" href="#rejected">Rejected</a></li>
-                                    <li role="presentation"><a data-toggle="tab" href="#search">Search</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#report">Report</a></li>
                                 </ul>
                             </div>
                             <div class="tab-content">
@@ -89,11 +90,36 @@
                                                 <th>Date</th>
                                                 <th>NIC</th>
                                                 <th>Name</th>
-                                                <th>GS Division</th>
+                                                <th>G.N. Division</th>
                                                 <th>Phone No</th>
                                                 <th>Category of grievance</th>
                                                 <th>Significance</th>
-                                                <th>Action taken by</th>
+                                                <th>Reported to</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="approve-reject">
+                                    <h2 class="head">Approve / Reject</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="approve-reject-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Ref No</th>
+                                                <th>Date</th>
+                                                <th>NIC</th>
+                                                <th>Name</th>
+                                                <th>G.N. Division</th>
+                                                <th>Phone No</th>
+                                                <th>Category of grievance</th>
+                                                <th>Significance</th>
+                                                <th>Reported to</th>
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
@@ -105,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="approved">
-                                    <h2 class="head">Approved Complaints</h2>
+                                    <h2 class="head">Accepted Complaints</h2>
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="approved-table">
                                             <thead>
@@ -115,11 +141,11 @@
                                                 <th>Date</th>
                                                 <th>NIC</th>
                                                 <th>Name</th>
-                                                <th>GS Division</th>
+                                                <th>G.N. Division</th>
                                                 <th>Phone No</th>
                                                 <th>Category of grievance</th>
                                                 <th>Significance</th>
-                                                <th>Action taken by</th>
+                                                <th>Reported to</th>
                                                 <th></th>
                                             </tr>
                                             </thead>
@@ -139,11 +165,11 @@
                                                 <th>Date</th>
                                                 <th>NIC</th>
                                                 <th>Name</th>
-                                                <th>GS Division</th>
+                                                <th>G.N. Division</th>
                                                 <th>Phone No</th>
                                                 <th>Category of grievance</th>
                                                 <th>Significance</th>
-                                                <th>Action taken by</th>
+                                                <th>Reported to</th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
@@ -153,14 +179,19 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="search">
-                                    <h2 class="head">Search Complaints</h2>
+                                <div class="tab-pane" id="report">
+                                    <h2 class="head">Report</h2>
                                     <form action="" id="search-complaints">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Project Name</label>
-                                                    <select name="sc-project-name" class="form-control">
+                                                    <label>Project State</label>
+                                                    <select name="sc-state" class="form-control">
+                                                        <option value="0">New</option>
+                                                        <option value="5">Consultant Solved</option>
+                                                        <option value="6">Contractor Solved</option>
+                                                        <option value="2">Employee Accepted</option>
+                                                        <option value="1">Employee Rejected</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -168,35 +199,64 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input type="submit" value="Search" class="btn btn-info">
-                                                    </input>
+                                                    <input type="submit" value="Show Report" class="btn btn-info" />
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="search-result">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="result-table">
-                                                <thead>
-                                                <tr>
-                                                    <th>Project Name</th>
-                                                    <th>Ref No</th>
-                                                    <th>Date</th>
-                                                    <th>NIC</th>
-                                                    <th>Name</th>
-                                                    <th>GS Division</th>
-                                                    <th>Phone No</th>
-                                                    <th>Category of grievance</th>
-                                                    <th>Significance</th>
-                                                    <th>Action taken by</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                                    <h2 class="head">Single Report</h2>
+                                    <form action="" id="single-report">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Project Name</label>
+                                                    <select name="sr-project-name" class="form-control"
+                                                            required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Ref: No</label>
+                                                    <select name="sr-ref-no" class="form-control"
+                                                            required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Show Report" class="btn btn-info" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <h2 class="head">Summuary Report (Project)</h2>
+                                    <form action="" id="single-summary-report">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Project Name</label>
+                                                    <select name="ssr-project-name" class="form-control"
+                                                            required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Show Report" class="btn btn-info" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <h2 class="head">Summary Report (All)</h2>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="submit" value="Show Report" class="btn btn-info" id="show-summary-btn"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,11 +265,12 @@
                     </div>
                     <div class="tab-pane fade" id="add-new">
                         <div class="container">
-                            <h3 class="head">Select One to create</h3>
+                            <h3 class="head">Select One to Create or Edit</h3>
                             <div class="tab">
                                 <ul class="nav nav-pills">
                                     <li role="presentation" class="active"><a data-toggle="tab" href="#new-complaint">Complaint</a>
                                     </li>
+                                    <li role="presentation"><a data-toggle="tab" href="#edit-complaint">Edit Complaint</a></li>
                                     <li role="presentation"><a data-toggle="tab" href="#new-project">Project</a></li>
                                     <li role="presentation"><a data-toggle="tab" href="#new-gr-category">Grievance
                                         Category</a></li>
@@ -265,7 +326,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>G.S. Division</label>
+                                                        <label>G.N. Division</label>
                                                         <input type="text" class="form-control" name="nc-gs-division">
                                                     </div>
                                                 </div>
@@ -300,9 +361,9 @@
                                                     <div class="form-group">
                                                         <label>Significance</label>
                                                         <select class="form-control" name="nc-significance">
-                                                            <option value="NR">No Risk</option>
-                                                            <option value="LR">Low Risk</option>
-                                                            <option value="HR">High Risk</option>
+                                                            <option value="Low">Low</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="High">High</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -311,18 +372,20 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Category of grievance</label>
-                                                        <select name="nc-grievance" class="form-control"></select>
+                                                        <div id="cat-of-gri">
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Action taken by</label>
+                                                        <label>Reported to</label>
                                                         <select class="form-control" name="nc-action-taken-by">
-                                                            <option value="NON">None</option>
+                                                            <option value="None">None</option>
                                                             <option value="RDA">RDA</option>
-                                                            <option value="CON">Consultant</option>
+                                                            <option value="Consultant">Consultant</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -330,7 +393,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Action / Response / Remody</label>
+                                                        <label>Action / Response / Remedy</label>
                                                         <textarea class="form-control" cols="30" rows="5"
                                                                   name="nc-action">
                                                         </textarea>
@@ -357,7 +420,148 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <input type="submit"
-                                                           class="btn btn-success btn-outline-rounded pull-right">
+                                                           class="btn btn-success btn-outline-rounded pull-right" id="new-complaint-submit">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="edit-complaint">
+                                    <h2 class="head">Edit Complaint</h2>
+                                    <div class="entry-form">
+                                        <form id="edit-complaint-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Project Name</label>
+                                                        <select name="ed-project-name" class="form-control"
+                                                                required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Ref: No</label>
+                                                        <select name="ed-ref-no" class="form-control"
+                                                                required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="date" class="form-control" name="ed-date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Name</label>
+                                                        <input type="text" class="form-control" name="ed-name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Address</label>
+                                                        <textarea class="form-control" cols="30" rows="4"
+                                                                  name="ed-address"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>G.N. Division</label>
+                                                        <input type="text" class="form-control" name="ed-gs-division">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Phone No</label>
+                                                        <input type="text" class="form-control" name="ed-phone-no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>NIC No</label>
+                                                        <input type="text" class="form-control" name="ed-nic-no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Nature of grievance</label>
+                                                        <input type="text" name="ed-nature-grievance"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Significance</label>
+                                                        <select class="form-control" name="ed-significance">
+                                                            <option value="Low">Low</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="High">High</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Category of grievance</label>
+                                                        <div id="ed-cat-of-gri">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Reported to</label>
+                                                        <select class="form-control" name="ed-action-taken-by">
+                                                            <option value="None">None</option>
+                                                            <option value="RDA">RDA</option>
+                                                            <option value="Consultant">Consultant</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Action / Response / Remedy</label>
+                                                        <textarea class="form-control" cols="30" rows="5"
+                                                                  name="ed-action">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Reported</label>
+                                                        <input type="date" class="form-control" name="ed-date-reported">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="submit"
+                                                           class="btn btn-success btn-outline-rounded pull-right" id="ed-complaint-submit">
                                                 </div>
                                             </div>
                                         </form>
@@ -652,7 +856,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>G.S. Division</label>
+                                    <label>G.N. Division</label>
                                     <input type="text" class="form-control" name="gs-division" readonly>
                                 </div>
                             </div>
@@ -685,7 +889,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Category of grievance</label>
-                            <input type="text" class="form-control" name="cat-grievance" readonly>
+                            <textarea name="cat-grievance" class="form-control" readonly></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -700,7 +904,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Action taken by</label>
+                                    <label>Reported to</label>
                                     <input type="text" class="form-control" name="action-taken-by" readonly>
                                 </div>
                             </div>
@@ -716,7 +920,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Action / Response / Remody</label>
+                            <label>Action / Response / Remedy</label>
                             <textarea class="form-control" cols="30" rows="5"
                                       name="action" readonly>
                                                         </textarea>
@@ -816,7 +1020,7 @@
     </div>
 </div>
 
-<!-- Approved Form Modal -->
+<!-- Accepted Form Modal -->
 <div id="approved-form" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
@@ -824,7 +1028,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Approved Employee Form</h4>
+                <h4 class="modal-title">Accepted Employee Form</h4>
             </div>
             <div class="modal-body">
                 <form action="#" id="approved-complaint-form">
@@ -869,7 +1073,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>G.S. Division</label>
+                                        <label>G.N. Division</label>
                                         <input type="text" class="form-control" name="gs-division" readonly>
                                     </div>
                                 </div>
@@ -902,7 +1106,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Category of grievance</label>
-                                <input type="text" class="form-control" name="cat-grievance" readonly>
+                                <textarea name="cat-grievance" class="form-control" readonly></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -917,7 +1121,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Action taken by</label>
+                                        <label>Reported to</label>
                                         <input type="text" class="form-control" name="action-taken-by" readonly>
                                     </div>
                                 </div>
@@ -933,7 +1137,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Action / Response / Remody</label>
+                                <label>Action / Response / Remedy</label>
                                 <textarea class="form-control" cols="30" rows="5"
                                           name="action" readonly>
                                                         </textarea>
@@ -1076,7 +1280,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>G.S. Division</label>
+                                        <label>G.N. Division</label>
                                         <input type="text" class="form-control" name="gs-division" readonly>
                                     </div>
                                 </div>
@@ -1109,7 +1313,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Category of grievance</label>
-                                <input type="text" class="form-control" name="cat-grievance" readonly>
+                                <textarea name="cat-grievance" class="form-control" readonly></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -1124,7 +1328,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Action taken by</label>
+                                        <label>Reported to</label>
                                         <input type="text" class="form-control" name="action-taken-by" readonly>
                                     </div>
                                 </div>
@@ -1140,7 +1344,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Action / Response / Remody</label>
+                                <label>Action / Response / Remedy</label>
                                 <textarea class="form-control" cols="30" rows="5"
                                           name="action" readonly>
                                                         </textarea>
@@ -1214,6 +1418,8 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/pdfmake.min.js"></script>
+<script src="js/vfs_fonts.js"></script>
 <script src="js/employee.js"></script>
 
 </body>

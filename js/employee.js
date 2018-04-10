@@ -1,7 +1,7 @@
-var db = firebase.database().ref();
-var user = null;
+const db = firebase.database().ref();
+let user = null;
 
-var State = {
+const State = {
     NEW: 0,
     E_REJ: 1,
     E_APP: 2,
@@ -33,9 +33,12 @@ $('form#new-project-form').on('submit', function (e) {
         pdName,
         dpdName
     }).then(function (res) {
-        alert('Project Created Successfully :)')
+        $('[name=new-project-name]').val('');
+        $('[name=new-pd-name]').val('');
+        $('[name=new-dpd-name]').val('');
+        alert('Project Created Successfully :)');
     }).catch(function (err) {
-        alert('Unable to create :{')
+        alert('Unable to create :{');
     })
 });
 
@@ -55,37 +58,38 @@ $('form#new-grievance-category-form').on('submit', function (e) {
 });
 
 $('form#new-complaint-form').on('submit', function (e) {
+
     e.preventDefault();
+    $('#new-complaint-submit').attr('disabled', true);
+    let projectName = $('[name=nc-project-name]').val();
+    let refNo = $('[name=nc-ref-no]').val();
+    let date = $('[name=nc-date]').val();
+    let name = $('[name=nc-name]').val();
+    let address = $('[name=nc-address]').val();
+    let gsDivision = $('[name=nc-gs-division]').val();
+    let phoneNo = $('[name=nc-phone-no]').val();
+    let nicNo = $('[name=nc-nic-no]').val();
+    let natureOfGrievance = $('[name=nc-nature-grievance]').val();
+    let significance = $('[name=nc-significance]').val();
+    let categoryOfGrievance = getSelectedCategoriesOfGrievance();
+    let actionTakenBy = $('[name=nc-action-taken-by]').val();
+    let action = $('[name=nc-action]').val();
+    let dateReported = $('[name=nc-date-reported]').val();
+    let closedOutBy = "";
+    let dateClosed = "";
+    let furtherAction = "";
+    let actionTaken = "";
+    let consultantSolution = "";
+    let contractorSolution = "";
+    let state = "";
 
-    var projectName = $('[name=nc-project-name]').val();
-    var refNo = $('[name=nc-ref-no]').val();
-    var date = $('[name=nc-date]').val();
-    var name = $('[name=nc-name]').val();
-    var address = $('[name=nc-address]').val();
-    var gsDivision = $('[name=nc-gs-division]').val();
-    var phoneNo = $('[name=nc-phone-no]').val();
-    var nicNo = $('[name=nc-nic-no]').val();
-    var natureOfGrievance = $('[name=nc-nature-grievance]').val();
-    var significance = $('[name=nc-significance]').val();
-    var categoryOfGrievance = $('[name=nc-grievance]').val();
-    var actionTakenBy = $('[name=nc-action-taken-by]').val();
-    var action = $('[name=nc-action]').val();
-    var dateReported = $('[name=nc-date-reported]').val();
-    var closedOutBy = "";
-    var dateClosed = "";
-    var furtherAction = "";
-    var actionTaken = "";
-    var consultantSolution = "";
-    var contractorSolution = "";
-    var state = "";
-
-    if (actionTakenBy == "NON") {
+    if (actionTakenBy == "None") {
         state = State.NEW;
     } else {
         state = State.C_SOL;
     }
 
-    var complaint = {
+    let complaint = {
         date,
         name,
         address,
@@ -107,49 +111,162 @@ $('form#new-complaint-form').on('submit', function (e) {
         state
     };
 
-    db.child('complaint').child(projectName).child(refNo).set(complaint).then(function () {
-            var files = $('[name=nc-photo]').get(0).files;
-            var fileRef = [];
-            for (var index = 0; index < files.length; index++) {
-                var file = files[index];
-                fileRef.push(file.name);
-                firebase.storage().ref().child(projectName).child(refNo).child('employee').child(file.name).put(file);
-            }
+    db.child('complaint').child(projectName).child(refNo).once('value').then(function (snapshot) {
+        if (snapshot.exists()) {
+            alert('You already registered a complint under this reference number');
+            $('#new-complaint-submit').attr('disabled', false);
+        } else {
+            db.child('complaint').child(projectName).child(refNo).set(complaint).then(function () {
+                let files = $('[name=nc-photo]').get(0).files;
+                if (files.length > 0) {
+                    let fileRef = [];
+                    let count = 0;
+                    for (let index = 0; index < files.length; index++) {
+                        let file = files[index];
+                        fileRef.push(file.name);
+                        firebase.storage().ref().child(projectName).child(refNo).child('employee').child(file.name).put(file).on('state_changed', function (snapshot) {
+                        }, function (error) {
+                            alert(error.message);
+                        }, function () {
+                            if (++count == files.length) {
+                                db.child('project-assign').child(projectName).once('value', function (snapshot) {
+                                    let users = snapshot.val();
+                                    for (let userId in users) {
+                                        if (users[userId].designation == "Consultant") {
+                                            let user = users[userId];
+                                            let email = {};
+                                            email.email = user.email;
+                                            email.name = user.name;
+                                            email.message = "You have received a new complaint from " + projectName + " holding the reference number " + refNo + ". We're looking forward for your immediate action.";
+                                            sendEmail(email);
+                                            clearComplaintForm();
+                                        }
+                                    }
+                                });
+                                db.child('image-ref').child(projectName).child(refNo).child('employee').set({fileRef});
+                                alert('Complaint has been submitted successfully : )');
+                                $('#new-complaint-submit').attr('disabled', false);
+                                clearComplaintForm();
+                            }
+                        });
+                    }
+                } else {
+                    db.child('project-assign').child(projectName).once('value', function (snapshot) {
+                        let users = snapshot.val();
+                        for (let userId in users) {
+                            if (users[userId].designation == "Consultant") {
+                                let user = users[userId];
+                                let email = {};
+                                email.email = user.email;
+                                email.name = user.name;
+                                email.message = "You have received a new complaint from " + projectName + " holding the reference number " + refNo + ". We're looking forward for your immediate action.";
+                                sendEmail(email);
+                                clearComplaintForm();
+                            }
+                        }
+                    });
+                    alert('Complaint has been submitted successfully : )');
+                    $('#new-complaint-submit').attr('disabled', false);
+                    clearComplaintForm();
+                }
+            }).catch(function (e) {
+                alert(e.message);
+                $('#new-complaint-submit').attr('disabled', false);
+            });
+        }
+    })
+});
+
+$('form#edit-complaint-form').on('submit', function (e) {
+
+    e.preventDefault();
+    let projectName = $('[name=ed-project-name]').val();
+    let refNo = $('[name=ed-ref-no]').val();
+    let date = $('[name=ed-date]').val();
+    let name = $('[name=ed-name]').val();
+    let address = $('[name=ed-address]').val();
+    let gsDivision = $('[name=ed-gs-division]').val();
+    let phoneNo = $('[name=ed-phone-no]').val();
+    let nicNo = $('[name=ed-nic-no]').val();
+    let natureOfGrievance = $('[name=ed-nature-grievance]').val();
+    let significance = $('[name=ed-significance]').val();
+    let categoryOfGrievance = getSelectedEditCategoriesOfGrievance();
+    let actionTakenBy = $('[name=ed-action-taken-by]').val();
+    let action = $('[name=ed-action]').val();
+    let dateReported = $('[name=ed-date-reported]').val();
+    let closedOutBy = "";
+    let dateClosed = "";
+    let furtherAction = "";
+    let actionTaken = "";
+    let consultantSolution = "";
+    let contractorSolution = "";
+    let state = "";
+
+    if (actionTakenBy == "None") {
+        state = State.NEW;
+    } else {
+        state = State.C_SOL;
+    }
+
+    let complaint = {
+        date,
+        name,
+        address,
+        gsDivision,
+        phoneNo,
+        nicNo,
+        natureOfGrievance,
+        significance,
+        categoryOfGrievance,
+        actionTakenBy,
+        action,
+        dateReported,
+        closedOutBy,
+        dateClosed,
+        furtherAction,
+        actionTaken,
+        consultantSolution,
+        contractorSolution,
+        state
+    };
+
+    if (confirm("This action cannot be recovered. Do you want to continue?")) {
+        $('#ed-complaint-submit').attr('disabled', true);
+        db.child('complaint').child(projectName).child(refNo).set(complaint).then(function () {
             db.child('project-assign').child(projectName).once('value', function (snapshot) {
-                var users = snapshot.val();
+                let users = snapshot.val();
                 for (let userId in users) {
                     if (users[userId].designation == "Consultant") {
-                        var user = users[userId];
-                        var email = {};
+                        let user = users[userId];
+                        let email = {};
                         email.email = user.email;
                         email.name = user.name;
-                        email.message = "You have received a new complaint from " + projectName + " holding the reference number " + refNo + ". We're looking forward for your immediate action.";
+                        email.message = projectName + " holding the reference number " + refNo + " is modified by the administrator. We're looking forward for your immediate action.";
                         sendEmail(email);
                     }
                 }
             });
-            db.child('image-ref').child(projectName).child(refNo).child('employee').set({fileRef});
-            alert('Complaint has been submitted successfully : )');
+            alert('Complaint has been edited successfully : )');
+            $('#ed-complaint-submit').attr('disabled', false);
         }).catch(function (e) {
             alert(e.message);
-        })
-    }).catch(function (e) {
-        alert(e.message);
-    })
+            $('#ed-complaint-submit').attr('disabled', false);
+        });
+    }
 });
 
 $('form#new-user-form').on('submit', function (e) {
     e.preventDefault();
 
-    var name = $('[name=nu-name]').val();
-    var nic = $('[name=nu-nic]').val();
-    var address = $('[name=nu-address]').val();
-    var mobileNo = $('[name=nu-mobile-no]').val();
-    var designation = $('[name=nu-designation]').val();
-    var email = $('[name=nu-email]').val();
-    var password = $('[name=nu-password]').val();
+    let name = $('[name=nu-name]').val();
+    let nic = $('[name=nu-nic]').val();
+    let address = $('[name=nu-address]').val();
+    let mobileNo = $('[name=nu-mobile-no]').val();
+    let designation = $('[name=nu-designation]').val();
+    let email = $('[name=nu-email]').val();
+    let password = $('[name=nu-password]').val();
 
-    var user = {
+    let user = {
         name,
         nic,
         address,
@@ -160,7 +277,7 @@ $('form#new-user-form').on('submit', function (e) {
 
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function (res) {
 
-        var userId = res.uid;
+        let userId = res.uid;
 
         db.child('user').child(userId).set(user).then(function () {
             alert('User has been created successfully : )')
@@ -180,9 +297,9 @@ $('form#new-user-form').on('submit', function (e) {
 
 $('form#acccount-settings-form').on('submit', function (e) {
     e.preventDefault();
-    var user = firebase.auth().currentUser;
-    var newPassword = $('[name=ac_new_pw]').val();
-    var confPassword = $('[name=ac_conf_pw]').val();
+    let user = firebase.auth().currentUser;
+    let newPassword = $('[name=ac_new_pw]').val();
+    let confPassword = $('[name=ac_conf_pw]').val();
 
     if (confPassword && newPassword) {
         if (confPassword == newPassword) {
@@ -203,97 +320,67 @@ $('form#acccount-settings-form').on('submit', function (e) {
 $('form#search-complaints').on('submit', function (e) {
     e.preventDefault();
 
-    var projectName = $('[name=sc-project-name]').val();
-    var table = document.getElementById('result-table');
+    let state = $('[name=sc-state]').val();
 
-    while (table.rows.length > 1) {
-        table.deleteRow(-1);
-    }
-
-    db.child('project-assign-user').child(user.uid).once('value', function (snapshot) {
-        var projects = snapshot.val();
-        if (!projects) {
-            return;
-        }
-        if (projects.hasOwnProperty(projectName)) {
-            db.child('complaint').child(projectName).once('value', function (complaints) {
-                var ref = complaints.val();
-                for (let id in ref) {
-                    var refId = id;
-                    var complaint = ref[refId];
-                    var row = table.insertRow(-1);
-                    row.insertCell(0).innerHTML = projectName;
-                    row.insertCell(1).innerHTML = refId;
-                    row.insertCell(2).innerHTML = complaint.date;
-                    row.insertCell(3).innerHTML = complaint.nicNo;
-                    row.insertCell(4).innerHTML = complaint.name;
-                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                    row.insertCell(8).innerHTML = complaint.significance;
-                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
-
-                    var moreDetailsBtn = document.createElement('input');
-                    moreDetailsBtn.type = 'button';
-                    moreDetailsBtn.className = 'btn btn-info';
-                    moreDetailsBtn.value = 'More Details';
-                    moreDetailsBtn.setAttribute('data-toggle', 'modal');
-                    moreDetailsBtn.setAttribute('data-target', '#more-details-form');
-                    moreDetailsBtn.setAttribute('data-project', projectName);
-                    moreDetailsBtn.setAttribute('data-ref', id);
-                    moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
-
-                    var moreDetailsBtnCell = row.insertCell(10);
-                    moreDetailsBtnCell.style.verticalAlign = 'middle';
-                    moreDetailsBtnCell.appendChild(moreDetailsBtn);
-
-                    var approveBtn = document.createElement('input');
-                    approveBtn.type = 'button';
-                    approveBtn.className = 'btn btn-danger';
-                    approveBtn.value = 'Approve';
-                    approveBtn.disabled = complaint.state == State.E_APP;
-                    approveBtn.setAttribute('data-toggle', 'modal');
-                    approveBtn.setAttribute('data-target', '#approved-form');
-                    approveBtn.setAttribute('data-project', projectName);
-                    approveBtn.setAttribute('data-ref', id);
-                    approveBtn.addEventListener('click', (e) => fillForm(e.target));
-
-                    var approveBtnCell = row.insertCell(11);
-                    approveBtnCell.style.verticalAlign = 'middle';
-                    approveBtnCell.appendChild(approveBtn);
-
-                    var rejectBtn = document.createElement('input');
-                    rejectBtn.type = 'button';
-                    rejectBtn.className = 'btn btn-danger';
-                    rejectBtn.value = 'Reject';
-                    rejectBtn.disabled = complaint.state == State.E_APP;
-                    rejectBtn.setAttribute('data-toggle', 'modal');
-                    rejectBtn.setAttribute('data-target', '#reject-form');
-                    rejectBtn.setAttribute('data-project', projectName);
-                    rejectBtn.setAttribute('data-ref', id);
-                    rejectBtn.addEventListener('click', (e) => fillForm(e.target));
-
-                    var rejectBtnCell = row.insertCell(12);
-                    rejectBtnCell.style.verticalAlign = 'middle';
-                    rejectBtnCell.appendChild(rejectBtn);
+    let body = [];
+    body.push(['Project', 'Ref No', 'Date', 'Name', 'Address', 'GN Division', 'NIC', 'Phone No', 'Nature of Grievance', 'Category of grievance', 'Signifcance', 'Reported By', ' Action', 'Date Reported', 'Consultant Solution', 'Contractor Solution']);
+    db.child('complaint').once('value').then((snapshot) => {
+        let projects = snapshot.val();
+        for (let project in projects) {
+            for (let refNo in projects[project]) {
+                let complaint = projects[project][refNo];
+                if (complaint.state == state) {
+                    console.log(refNo, state, complaint.state);
+                    body.push([project,
+                        refNo,
+                        complaint.date,
+                        complaint.name,
+                        complaint.address,
+                        complaint.gsDivision,
+                        complaint.nicNo,
+                        complaint.phoneNo,
+                        complaint.natureOfGrievance,
+                        complaint.categoryOfGrievance,
+                        complaint.significance,
+                        complaint.actionTakenBy,
+                        complaint.action,
+                        complaint.dateReported,
+                        complaint.consultantSolution,
+                        complaint.contractorSolution]);
                 }
-            });
+            }
+        }
+        // let title = 'Employee Complaint System\nSummary of ' + ($("[name=sc-state] option:selected").text() + ' Complaints\n' + new Date().toDateString());
+        // tableReport(title, body, 'landscape', 'A3');
+    })
+
+});
+
+$('form#single-report').on('submit', function (e) {
+    e.preventDefault();
+    let projectname = $('[name=sr-project-name]').val();
+    let refNo = $('[name=sr-ref-no]').val();
+    db.child('complaint').child(projectname).child(refNo).once('value', function (snapshot) {
+        let complaint = snapshot.val();
+        if (complaint) {
+            generateReport(projectname, refNo, complaint)
         }
     });
+
 });
 
 $('form#approved-complaint-form').on('submit', function (e) {
     e.preventDefault();
 
-    var projectName = $('[name=project-name]').val();
-    var refNo = $('[name=ref-no]').val();
+    let projectName = $('[name=project-name]').val();
+    let refNo = $('[name=ref-no]').val();
 
-    var closedOutBy = user.uid;
-    var dateReported = $('[name=ap-date-reported]').val();
-    var dateClosed = $('[name=ap-date-closed]').val();
-    var furtherAction = $('[name=ap-further-action]').val();
-    var actionTaken = $('[name=ap-action-taken]').val();
-    var state = State.E_APP;
+    let closedOutBy = user.uid;
+    let dateReported = $('[name=ap-date-reported]').val();
+    let dateClosed = $('[name=ap-date-closed]').val();
+    let furtherAction = $('[name=ap-further-action]').val();
+    let actionTaken = $('[name=ap-action-taken]').val();
+    let state = State.E_APP;
 
     db.child('complaint').child(projectName).child(refNo).update({
         closedOutBy,
@@ -312,22 +399,22 @@ $('form#approved-complaint-form').on('submit', function (e) {
 $('form#reject-complaint-form').on('submit', function (e) {
     e.preventDefault();
 
-    var projectName = $('[name=project-name]').val();
-    var refNo = $('[name=ref-no]').val();
+    let projectName = $('[name=project-name]').val();
+    let refNo = $('[name=ref-no]').val();
 
-    var reasonToReject = $('[name=rj-reason]').val();
-    var state = State.E_REJ;
+    let reasonToReject = $('[name=rj-reason]').val();
+    let state = State.E_REJ;
 
     db.child('complaint').child(projectName).child(refNo).update({
         reasonToReject,
         state
     }).then(function () {
         db.child('project-assign').child(projectName).once('value', function (snapshot) {
-            var users = snapshot.val();
+            let users = snapshot.val();
             for (let userId in users) {
                 if (users[userId].designation == "Consultant") {
-                    var user = users[userId];
-                    var email = {};
+                    let user = users[userId];
+                    let email = {};
                     email.email = user.email;
                     email.name = user.name;
                     email.message = "Your solution for" + projectName + " with the reference number " + refNo + " was rejected. Please submit a new solution.";
@@ -342,18 +429,139 @@ $('form#reject-complaint-form').on('submit', function (e) {
     $('[name=rj-close]').click();
 });
 
+$('[name=ed-project-name]').on('change', function () {
+    let projectname = $('[name=ed-project-name]').val();
+    db.child('complaint').child(projectname).once('value').then(function (snapshot) {
+        $('[name=ed-ref-no]').find('option').remove()
+        if (snapshot.exists()) {
+            for (let refNo in snapshot.val()) {
+                $('[name=ed-ref-no]').append($('<option>', {
+                    val: refNo,
+                    text: refNo
+                }));
+            }
+            $('[name=ed-ref-no]').trigger('change');
+        }
+    });
+
+});
+
+$('[name=sr-project-name]').on('change', function () {
+    let projectname = $('[name=sr-project-name]').val();
+    db.child('complaint').child(projectname).once('value').then(function (snapshot) {
+        $('[name=sr-ref-no]').find('option').remove()
+        if (snapshot.exists()) {
+            for (let refNo in snapshot.val()) {
+                $('[name=sr-ref-no]').append($('<option>', {
+                    val: refNo,
+                    text: refNo
+                }));
+            }
+        }
+    });
+
+});
+
+$('[name=ed-ref-no]').on('change', function () {
+    let projectname = $('[name=ed-project-name]').val();
+    let refNo = $('[name=ed-ref-no]').val();
+    $('div#ed-cat-of-gri').empty();
+    db.child('complaint').child(projectname).child(refNo).once('value', function (snapshot) {
+        let complaint = snapshot.val();
+        if (complaint) {
+            $('[name=ed-name]').val(complaint.name);
+            $('[name=ed-nic-no]').val(complaint.nicNo);
+            $('[name=ed-date]').val(complaint.date);
+            $('[name=ed-address]').val(complaint.address);
+            $('[name=ed-gs-division]').val(complaint.gsDivision);
+            $('[name=ed-phone-no]').val(complaint.phoneNo);
+            $('[name=ed-nature-grievance]').val(complaint.natureOfGrievance);
+            $('[name=ed-significance]').val(complaint.significance);
+            $('[name=ed-action-taken-by]').val(complaint.actionTakenBy);
+            $('[name=ed-action]').val(complaint.action);
+            $('[name=ed-date-reported]').val(complaint.dateReported);
+            db.child('grievance-category').once('value').then(function (snapshot) {
+                if (snapshot.val()) {
+                    for (let category in snapshot.val()) {
+                        let div = $("<div>", {
+                            class: "checkbox"
+                        });
+                        let label = $("<label>");
+                        let input = $('<input />', {
+                            type: "checkbox",
+                            name: "ed-category-grievance",
+                            value: category,
+                            checked: complaint.categoryOfGrievance.indexOf(category) != -1
+                        });
+                        label.append(input);
+                        label.append(category);
+                        div.append(label);
+                        $('#ed-cat-of-gri').append(div);
+                    }
+                }
+            })
+        }
+    });
+});
+
+$('#show-summary-btn').on('click', function () {
+    let statesCount = [0, 0, 0, 0, 0, 0, 0];
+    db.child('complaint').once('value').then((snapshot) => {
+        let projects = snapshot.val();
+        for (let project in projects) {
+            for (let refNo in projects[project]) {
+                let complaint = projects[project][refNo];
+                statesCount[complaint.state]++;
+            }
+        }
+        let body = [['State of the complaint', 'No of complaints'],
+            ['Pending', statesCount[0]],
+            ['Employer\'s Accepted/ Solved', statesCount[2]],
+            ['Employer\'s Rejected', statesCount[1]],
+            ['Consultant Accepted', statesCount[4]],
+            ['Consultant Rejected', statesCount[3]]];
+
+        tableReport('Summary', body, 'portrait' ,'A4');
+    })
+});
+
+$('#single-summary-report').on('submit', function (e) {
+    e.preventDefault();
+    let projectname = $('[name=ssr-project-name]').val();
+    let statesCount = [0, 0, 0, 0, 0, 0, 0];
+    db.child('complaint').once('value').then((snapshot) => {
+        let projects = snapshot.val();
+        for (let project in projects) {
+            if(project == projectname){
+                for (let refNo in projects[project]) {
+                    let complaint = projects[project][refNo];
+                    statesCount[complaint.state]++;
+                }
+            }
+        }
+        let body = [['State of the complaint', 'No of complaints'],
+            ['Pending', statesCount[0]],
+            ['Employer\'s Accepted/ Solved', statesCount[2]],
+            ['Employer\'s Rejected', statesCount[1]],
+            ['Consultant Accepted', statesCount[4]],
+            ['Consultant Rejected', statesCount[3]]];
+
+        tableReport('Summary', body, 'portrait' ,'A4');
+    })
+});
+
 function fillCatGrievanceTable() {
     db.child('grievance-category').on('value', function (snapshot) {
-        var table = document.getElementById('cat-gr-table');
+        let table = document.getElementById('cat-gr-table');
 
         while (table.rows.length > 1) {
             table.deleteRow(-1);
         }
 
-        for (var key in snapshot.val()) {
-            var rowData = table.insertRow(-1);
+        for (let key in snapshot.val()) {
+            let rowData = table.insertRow(-1);
             rowData.insertCell(0).innerHTML = key;
-            var btn = document.createElement('input');
+            let btn = document.createElement('input');
             btn.type = "button";
             btn.className = "btn btn-fill btn-danger";
             btn.value = "Delete";
@@ -371,8 +579,8 @@ function fillCatGrievanceTable() {
 function fillPendingTable() {
     setTimeout(function () {
         db.child('project-assign-user').child(user.uid).once('value', function (snapshot) {
-            var projects = snapshot.val();
-            var table = document.getElementById('pending-table');
+            let projects = snapshot.val();
+            let table = document.getElementById('pending-table');
             while (table.rows.length > 1) {
                 table.deleteRow(-1);
             }
@@ -381,15 +589,15 @@ function fillPendingTable() {
             }
             for (let key in projects) {
                 setTimeout(function () {
-                    var project = key;
+                    let project = key;
                     db.child('complaint').child(project).once('value', function (complaints) {
-                        var ref = complaints.val();
+                        let ref = complaints.val();
                         for (let id in ref) {
-                            if (ref[id].state != State.E_REJ && ref[id].state != State.E_APP) {
+                            if (ref[id].state != State.E_REJ && ref[id].state != State.E_APP && ref[id].state != State.C_APP) {
                                 setTimeout(function () {
-                                    var refId = id;
-                                    var complaint = ref[refId];
-                                    var row = table.insertRow(-1);
+                                    let refId = id;
+                                    let complaint = ref[refId];
+                                    let row = table.insertRow(-1);
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
@@ -401,7 +609,7 @@ function fillPendingTable() {
                                     row.insertCell(8).innerHTML = complaint.significance;
                                     row.insertCell(9).innerHTML = complaint.actionTakenBy;
 
-                                    var moreDetailsBtn = document.createElement('input');
+                                    let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
                                     moreDetailsBtn.className = 'btn btn-info';
                                     moreDetailsBtn.value = 'More Details';
@@ -411,40 +619,106 @@ function fillPendingTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(10);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
-                                    var approveBtn = document.createElement('input');
+                                    let remindBtn = document.createElement('input');
+                                    remindBtn.type = 'button';
+                                    remindBtn.className = 'btn btn-success';
+                                    remindBtn.value = 'Remind';
+                                    remindBtn.setAttribute('data-project', project);
+                                    remindBtn.setAttribute('data-ref', id);
+                                    remindBtn.addEventListener('click', (e) => remindConsultant(e.target));
+
+                                    let remindBtnCell = row.insertCell(11);
+                                    remindBtnCell.style.verticalAlign = 'middle';
+                                    remindBtnCell.appendChild(remindBtn);
+                                }, 0);
+                            }
+                        }
+                    })
+                }, 0);
+            }
+        });
+    }, 2000);
+}
+
+function fillApproveRejectTable() {
+    setTimeout(function () {
+        db.child('project-assign-user').child(user.uid).once('value', function (snapshot) {
+            let projects = snapshot.val();
+            let table = document.getElementById('approve-reject-table');
+            while (table.rows.length > 1) {
+                table.deleteRow(-1);
+            }
+            if (!projects) {
+                return;
+            }
+            for (let key in projects) {
+                setTimeout(function () {
+                    let project = key;
+                    db.child('complaint').child(project).once('value', function (complaints) {
+                        let ref = complaints.val();
+                        for (let id in ref) {
+                            if (ref[id].state == State.C_APP) {
+                                setTimeout(function () {
+                                    let refId = id;
+                                    let complaint = ref[refId];
+                                    let row = table.insertRow(-1);
+                                    row.insertCell(0).innerHTML = project;
+                                    row.insertCell(1).innerHTML = refId;
+                                    row.insertCell(2).innerHTML = complaint.date;
+                                    row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(4).innerHTML = complaint.name;
+                                    row.insertCell(5).innerHTML = complaint.gsDivision;
+                                    row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(8).innerHTML = complaint.significance;
+                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+
+                                    let moreDetailsBtn = document.createElement('input');
+                                    moreDetailsBtn.type = 'button';
+                                    moreDetailsBtn.className = 'btn btn-info';
+                                    moreDetailsBtn.value = 'More Details';
+                                    moreDetailsBtn.setAttribute('data-toggle', 'modal');
+                                    moreDetailsBtn.setAttribute('data-target', '#more-details-form');
+                                    moreDetailsBtn.setAttribute('data-project', project);
+                                    moreDetailsBtn.setAttribute('data-ref', id);
+                                    moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
+
+                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    moreDetailsBtnCell.style.verticalAlign = 'middle';
+                                    moreDetailsBtnCell.appendChild(moreDetailsBtn);
+
+                                    let approveBtn = document.createElement('input');
                                     approveBtn.type = 'button';
                                     approveBtn.className = 'btn btn-danger';
-                                    approveBtn.value = 'Approve';
-                                    approveBtn.disabled = complaint.state == State.E_APP;
+                                    approveBtn.value = 'Accept';
                                     approveBtn.setAttribute('data-toggle', 'modal');
                                     approveBtn.setAttribute('data-target', '#approved-form');
                                     approveBtn.setAttribute('data-project', project);
                                     approveBtn.setAttribute('data-ref', id);
-
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    var approveBtnCell = row.insertCell(11);
-                                    approveBtnCell.style.verticalAlign = 'middle';
 
+                                    let approveBtnCell = row.insertCell(11);
+                                    approveBtnCell.style.verticalAlign = 'middle';
                                     approveBtnCell.appendChild(approveBtn);
-                                    var rejectBtn = document.createElement('input');
+
+                                    let rejectBtn = document.createElement('input');
                                     rejectBtn.type = 'button';
                                     rejectBtn.className = 'btn btn-danger';
                                     rejectBtn.value = 'Reject';
-                                    rejectBtn.disabled = complaint.state == State.E_APP;
                                     rejectBtn.setAttribute('data-toggle', 'modal');
                                     rejectBtn.setAttribute('data-target', '#reject-form');
                                     rejectBtn.setAttribute('data-project', project);
-
                                     rejectBtn.setAttribute('data-ref', id);
                                     rejectBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    var rejectBtnCell = row.insertCell(12);
 
+                                    let rejectBtnCell = row.insertCell(12);
                                     rejectBtnCell.style.verticalAlign = 'middle';
                                     rejectBtnCell.appendChild(rejectBtn);
+
                                 }, 0);
                             }
                         }
@@ -458,8 +732,8 @@ function fillPendingTable() {
 function fillApprovedTable() {
     setTimeout(function () {
         db.child('project-assign-user').child(user.uid).once('value', function (snapshot) {
-            var projects = snapshot.val();
-            var table = document.getElementById('approved-table');
+            let projects = snapshot.val();
+            let table = document.getElementById('approved-table');
             while (table.rows.length > 1) {
                 table.deleteRow(-1);
             }
@@ -468,15 +742,15 @@ function fillApprovedTable() {
             }
             for (let key in projects) {
                 setTimeout(function () {
-                    var project = key;
+                    let project = key;
                     db.child('complaint').child(project).once('value', function (complaints) {
-                        var ref = complaints.val();
+                        let ref = complaints.val();
                         for (let id in ref) {
                             if (ref[id].state == State.E_APP) {
                                 setTimeout(function () {
-                                    var refId = id;
-                                    var complaint = ref[refId];
-                                    var row = table.insertRow(-1);
+                                    let refId = id;
+                                    let complaint = ref[refId];
+                                    let row = table.insertRow(-1);
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
@@ -488,7 +762,7 @@ function fillApprovedTable() {
                                     row.insertCell(8).innerHTML = complaint.significance;
                                     row.insertCell(9).innerHTML = complaint.actionTakenBy;
 
-                                    var moreDetailsBtn = document.createElement('input');
+                                    let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
                                     moreDetailsBtn.className = 'btn btn-info';
                                     moreDetailsBtn.value = 'More Details';
@@ -498,7 +772,7 @@ function fillApprovedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(10);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
                                 }, 0);
@@ -514,8 +788,8 @@ function fillApprovedTable() {
 function fillRejectedTable() {
     setTimeout(function () {
         db.child('project-assign-user').child(user.uid).once('value', function (snapshot) {
-            var projects = snapshot.val();
-            var table = document.getElementById('rejected-table');
+            let projects = snapshot.val();
+            let table = document.getElementById('rejected-table');
             while (table.rows.length > 1) {
                 table.deleteRow(-1);
             }
@@ -524,15 +798,15 @@ function fillRejectedTable() {
             }
             for (let key in projects) {
                 setTimeout(function () {
-                    var project = key;
-                    db.child('complaint').child(project).once('value', function (complaints) {
-                        var ref = complaints.val();
+                    let project = key;
+                    db.child('complaint').child(project).on('value', function (complaints) {
+                        let ref = complaints.val();
                         for (let id in ref) {
                             if (ref[id].state == State.E_REJ) {
                                 setTimeout(function () {
-                                    var refId = id;
-                                    var complaint = ref[refId];
-                                    var row = table.insertRow(-1);
+                                    let refId = id;
+                                    let complaint = ref[refId];
+                                    let row = table.insertRow(-1);
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
@@ -544,7 +818,7 @@ function fillRejectedTable() {
                                     row.insertCell(8).innerHTML = complaint.significance;
                                     row.insertCell(9).innerHTML = complaint.actionTakenBy;
 
-                                    var moreDetailsBtn = document.createElement('input');
+                                    let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
                                     moreDetailsBtn.className = 'btn btn-info';
                                     moreDetailsBtn.value = 'More Details';
@@ -554,14 +828,14 @@ function fillRejectedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(10);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
-                                    var approveBtn = document.createElement('input');
+                                    let approveBtn = document.createElement('input');
                                     approveBtn.type = 'button';
                                     approveBtn.className = 'btn btn-danger';
-                                    approveBtn.value = 'Approve';
+                                    approveBtn.value = 'Accept';
                                     approveBtn.disabled = complaint.state == State.E_APP;
                                     approveBtn.setAttribute('data-toggle', 'modal');
                                     approveBtn.setAttribute('data-target', '#approved-form');
@@ -569,7 +843,7 @@ function fillRejectedTable() {
                                     approveBtn.setAttribute('data-ref', id);
 
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    var approveBtnCell = row.insertCell(11);
+                                    let approveBtnCell = row.insertCell(11);
                                     approveBtnCell.style.verticalAlign = 'middle';
                                 }, 0);
                             }
@@ -583,13 +857,13 @@ function fillRejectedTable() {
 
 function fillUserTable() {
     db.child('user').on('value', function (snapshot) {
-        var table = document.getElementById('user-table');
+        let table = document.getElementById('user-table');
         while (table.rows.length > 1) {
             table.deleteRow(-1);
         }
         users = snapshot.val();
-        for (var key in users) {
-            var user = users[key];
+        for (let key in users) {
+            let user = users[key];
             rowData = table.insertRow(-1);
             rowData.insertCell(0).innerHTML = user.name;
             rowData.insertCell(1).innerHTML = user.nic;
@@ -609,18 +883,18 @@ function fillUserTable() {
 
 function fillProjectTable() {
     db.child('project').on('value', function (snapshot) {
-        var table = document.getElementById('project-table');
+        let table = document.getElementById('project-table');
         while (table.rows.length > 1) {
             table.deleteRow(-1);
         }
         projects = snapshot.val();
-        for (var key in projects) {
-            var project = projects[key];
+        for (let key in projects) {
+            let project = projects[key];
             rowData = table.insertRow(-1);
             rowData.insertCell(0).innerHTML = key;
             rowData.insertCell(1).innerHTML = project.pdName;
             rowData.insertCell(2).innerHTML = project.dpdName;
-            var btn = document.createElement('input');
+            let btn = document.createElement('input');
             btn.className = "btn btn-danger";
             btn.value = "Delete";
             btn.type = "button";
@@ -639,8 +913,11 @@ function fillProjectCombo() {
         $('[name=nc-project-name]').find('option').remove()
         $('[name=nu-project-name]').find('option').remove()
         $('[name=sc-project-name]').find('option').remove()
+        $('[name=ed-project-name]').find('option').remove()
+        $('[name=sr-project-name]').find('option').remove()
+        $('[name=ssr-project-name]').find('option').remove()
 
-        var project = snapshot.val();
+        let project = snapshot.val();
 
         for (let name in project) {
             $('[name=nc-project-name]').append($('<option>', {
@@ -655,8 +932,21 @@ function fillProjectCombo() {
                 val: name,
                 text: name
             }));
+            $('[name=ed-project-name]').append($('<option>', {
+                val: name,
+                text: name
+            }));
+            $('[name=sr-project-name]').append($('<option>', {
+                val: name,
+                text: name
+            }));
+            $('[name=ssr-project-name]').append($('<option>', {
+                val: name,
+                text: name
+            }));
         }
-        // $('[name=sc-project-name]').trigger('change');
+        $('[name=ed-project-name]').trigger('change');
+        $('[name=sr-project-name]').trigger('change');
     });
 }
 
@@ -664,9 +954,9 @@ function fillNatureOfGrievance() {
     db.child('grievance-category').on('value', function (snapshot) {
         $('[name=nc-grievance]').find('option').remove();
 
-        var grivance = snapshot.val();
+        let grivance = snapshot.val();
 
-        for (var name in grivance) {
+        for (let name in grivance) {
             $('[name=nc-grievance]').append($('<option>', {
                 val: name,
                 text: name
@@ -684,10 +974,10 @@ function signout() {
 }
 
 function fillForm(target) {
-    var project = target.getAttribute('data-project');
-    var ref = target.getAttribute('data-ref');
+    let project = target.getAttribute('data-project');
+    let ref = target.getAttribute('data-ref');
     db.child('complaint').child(project).child(ref).once('value', function (snapshot) {
-        var complaint = snapshot.val();
+        let complaint = snapshot.val();
         if (complaint) {
             $('[name=project-name]').val(project);
             $('[name=ref-no]').val(ref);
@@ -705,7 +995,7 @@ function fillForm(target) {
             $('[name=date-reported]').val(complaint.dateReported);
             $('[name=cons-solution]').val(complaint.consultantSolution);
             $('[name=cont-solution]').val(complaint.contractorSolution);
-            var url = 'slider.html?project=' + project + '&ref=' + ref + '&type=';
+            let url = 'slider.html?project=' + project + '&ref=' + ref + '&type=';
             $('[name=employee-link]').attr('href', url + 'employee');
             $('[name=consultant-link]').attr('href', url + 'consultant');
             $('[name=contractor-link]').attr('href', url + 'contractor');
@@ -738,11 +1028,364 @@ function sendEmail(email) {
     })
 }
 
+function remindConsultant(target) {
+    let project = target.getAttribute('data-project');
+    let message = prompt('Plese enter a message to sent to the consultant/s');
+    db.child('project-assign').child(project).once('value', function (snapshot) {
+        let users = snapshot.val();
+        for (let userId in users) {
+            if (users[userId].designation == "Consultant") {
+                let user = users[userId];
+                let email = {};
+                email.email = user.email;
+                email.name = user.name;
+                email.message = message;
+                sendEmail(email);
+            }
+        }
+    });
+}
+
+function fillCatOfGrievance() {
+    db.child('grievance-category').once('value').then(function (snapshot) {
+        if (snapshot.val()) {
+            for (let category in snapshot.val()) {
+                let div = $("<div>", {
+                    class: "checkbox"
+                });
+                let label = $("<label>");
+                let input = $('<input />', {
+                    type: "checkbox",
+                    name: "category-grievance",
+                    value: category
+                });
+                label.append(input);
+                label.append(category);
+                div.append(label);
+                $('#cat-of-gri').append(div);
+            }
+        }
+    })
+}
+
+function getSelectedCategoriesOfGrievance() {
+    let selected = [];
+    let arr = $('[name=category-grievance]');
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].checked) {
+            selected.push(arr[i].value);
+        }
+    }
+    return selected;
+}
+
+function getSelectedEditCategoriesOfGrievance() {
+    let selected = [];
+    let arr = $('[name=ed-category-grievance]');
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].checked) {
+            selected.push(arr[i].value);
+        }
+    }
+    return selected;
+}
+
+function clearComplaintForm() {
+    $('[name=nc-project-name]').select(0);
+    $('[name=nc-ref-no]').val('');
+    $('[name=nc-date]').val('');
+    $('[name=nc-name]').val('');
+    $('[name=nc-address]').val('');
+    $('[name=nc-gs-division]').val('');
+    $('[name=nc-phone-no]').val('');
+    $('[name=nc-nic-no]').val('');
+    $('[name=nc-nature-grievance]').val('');
+    $('[name=nc-significance]').select("Low");
+    $('[name=nc-action-taken-by]').select("NON");
+    $('[name=nc-action]').val('');
+    $('[name=nc-date-reported]').val('');
+    $('[name=nc-photo]').val("");
+    let arr = $('[name=category-grievance]');
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].checked = false;
+    }
+}
+
+function tableReport(title, body, pageOrientation, pageSize) {
+    let definition = {
+        pageSize: pageSize,
+        pageOrientation: pageOrientation,
+        content: [
+            {text: title, style: 'header'},
+
+            {
+                table: {
+                    body: body
+                }
+            }
+        ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                margin: [0, 0, 0, 10]
+            }
+
+        }
+    }
+    pdfMake.createPdf(definition).open({}, window);
+}
+
+function generateReport(proect, refNo, complaint) {
+    var definition = {
+        pageSize: 'A4',
+        content: [
+            {text: 'Employee Complaint System', style: 'header'},
+            {text: 'Report for a single complaint'},
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Project'
+                    },
+                    {
+                        width: '*',
+                        text: proect
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 20, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Ref No'
+                    },
+                    {
+                        width: '*',
+                        text: refNo
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Date'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.date
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Name'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.name
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Address'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.address
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'GN Division'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.gsDivision
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'NIC No'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.nicNo
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Phone No'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.phoneNo
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Nature of Grievance'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.natureOfGrievance
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Category of grievance'
+                    },
+                    {
+                        width: '*',
+                        ol: complaint.categoryOfGrievance
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Significance'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.significance
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Reported By'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.actionTakenBy
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Action'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.action
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Date Reported'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.dateReported
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Consultant Solution'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.consultantSolution
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+            {
+                columns: [
+                    {
+                        width: 150,
+                        text: 'Contractor Solution'
+                    },
+                    {
+                        width: '*',
+                        text: complaint.contractorSolution
+                    }
+                ],
+                columnGap: 5,
+                margin: [0, 5, 0, 0]
+            },
+        ],
+
+        styles: {
+            header: {
+                fontSize: 22,
+                bold: true
+            }
+        }
+    };
+    pdfMake.createPdf(definition).open({}, window);
+
+}
+
 fillNatureOfGrievance();
 fillProjectCombo();
 fillCatGrievanceTable();
 fillUserTable();
 fillProjectTable();
 fillPendingTable();
+fillApproveRejectTable();
 fillApprovedTable();
 fillRejectedTable();
+fillCatOfGrievance();

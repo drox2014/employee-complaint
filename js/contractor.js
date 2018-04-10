@@ -67,28 +67,51 @@ $('form#solve-complaint-form').on('submit', function (e) {
         state
     }).then(function () {
         var files = $('[name=sol-cont-photo]').get(0).files;
-        var fileRef = [];
-        for (var index = 0; index < files.length; index++) {
-            var file = files[index];
-            fileRef.push(file.name);
-            firebase.storage().ref().child(projectName).child(refNo).child('contractor').child(file.name).put(file);
-        }
-        db.child('image-ref').child(projectName).child(refNo).child('contractor').set({fileRef});
-        db.child('project-assign').child(projectName).once('value', function (snapshot) {
-            var users = snapshot.val();
-            for (let userId in users) {
-                if (users[userId].designation == "Consultant") {
-                    var user = users[userId];
-                    var email = {};
-                    email.email = user.email;
-                    email.name = user.name;
-                    email.message = "We have submitted a new solution for " + projectName + " with the reference number " + refNo + ". We're looking forward for your immediate response.";
-                    sendEmail(email);
-                }
+        if (files.length) {
+            var fileRef = [];
+            var count = 0;
+            for (var index = 0; index < files.length; index++) {
+                var file = files[index];
+                fileRef.push(file.name);
+                firebase.storage().ref().child(projectName).child(refNo).child('contractor').child(file.name).put(file).on('state_changed', function (snapshot) {
+                }, function (error) {
+                    alert(error.message);
+                }, function () {
+                    if (++count == files.length) {
+                        db.child('image-ref').child(projectName).child(refNo).child('contractor').set({fileRef});
+                        db.child('project-assign').child(projectName).once('value', function (snapshot) {
+                            var users = snapshot.val();
+                            for (let userId in users) {
+                                if (users[userId].designation == "Consultant") {
+                                    var user = users[userId];
+                                    var email = {};
+                                    email.email = user.email;
+                                    email.name = user.name;
+                                    email.message = "We have submitted a new solution for " + projectName + " with the reference number " + refNo + ". We're looking forward for your immediate response.";
+                                    sendEmail(email);
+                                }
+                            }
+                            alert('Complaint was solved successfully :)');
+                        });
+                    }
+                });
             }
-        });
-        alert('Complaint was approved successfully :)');
-        alert('Complaint was solved successfully :)');
+        } else {
+            db.child('project-assign').child(projectName).once('value', function (snapshot) {
+                var users = snapshot.val();
+                for (let userId in users) {
+                    if (users[userId].designation == "Consultant") {
+                        var user = users[userId];
+                        var email = {};
+                        email.email = user.email;
+                        email.name = user.name;
+                        email.message = "We have submitted a new solution for " + projectName + " with the reference number " + refNo + ". We're looking forward for your immediate response.";
+                        sendEmail(email);
+                    }
+                }
+                alert('Complaint was solved successfully :)');
+            });
+        }
     }).catch(function (e) {
         alert('Unable to approve the complaint, ' + e.message);
     });
@@ -351,20 +374,20 @@ function fillForm(target) {
             $('[name=consultant-link]').attr('href', url + 'consultant');
             $('[name=contractor-link]').attr('href', url + 'contractor');
 
-            if(complaint.state == State.E_APP){
+            if (complaint.state == State.E_APP) {
                 $('div.approved-content').show();
                 $('[name=date-reported]').val(complaint.dateReported);
                 $('[name=date-closed]').val(complaint.dateClosed);
                 $('[name=further-action]').val(complaint.furtherAction);
                 $('[name=action-taken ]').val(complaint.actionTaken);
-            }else{
+            } else {
                 $('div.approved-content').hide();
             }
 
-            if(complaint.state == State.C_REJ){
+            if (complaint.state == State.C_REJ) {
                 $('div.rejected-content').show();
                 $('[name=reason-to-reject]').val(complaint.reasonToReject);
-            }else{
+            } else {
                 $('div.rejected-content').hide();
             }
         }

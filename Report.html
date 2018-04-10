@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/consultant.css">
+</head>
+<body>
+<button class="btn btn-info" onclick="printReport()">Single Report</button>
+
+<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/pdfmake.min.js"></script>
+<script src="js/vfs_fonts.js"></script>
+<script src="js/ReportGenrator.js"></script>
+
+<script>
+    var db = firebase.database().ref();
+    var State = {
+        NEW: 0,
+        E_REJ: 1,
+        E_APP: 2,
+        C_REJ: 3,
+        C_APP: 4,
+        C_SOL: 5,
+        T_SOL: 6
+    };
+
+    function printReport() {
+        let body = [];
+        body.push(['Project', 'Ref No', 'Date', 'Name', 'Address', 'GS Division', 'NIC', 'Phone No', 'Nature of Grievance', 'Category of grievance', 'Signifcance', 'Reported By', ' Action', 'Date Reported', 'Consultant Solution', 'Contractor Solution']);
+        db.child('complaint').once('value').then((snapshot) => {
+            let projects = snapshot.val();
+            for (let project in projects) {
+                for (let refNo in projects[project]) {
+                    let complaint = projects[project][refNo];
+                    if (complaint.state == State.T_SOL) {
+                        body.push([project,
+                            refNo,
+                            complaint.date,
+                            complaint.name,
+                            complaint.address,
+                            complaint.gsDivision,
+                            complaint.nicNo,
+                            complaint.phoneNo,
+                            complaint.natureOfGrievance,
+                            complaint.categoryOfGrievance,
+                            complaint.significance,
+                            complaint.actionTakenBy,
+                            complaint.action,
+                            complaint.dateReported,
+                            complaint.consultantSolution,
+                            complaint.contractorSolution]);
+                    }
+                }
+            }
+            tableReport("Pending Complaints",body);
+        })
+//        var imageData = [];
+//        var count = 0;
+//        db.child('image-ref').child('Project 1').child('R001').child('employee').once('value', function (snapshot) {
+//            var imageRefs = snapshot.val()['fileRef'];
+//            for (let index in imageRefs) {
+//                var imageRef = imageRefs[index]
+//                firebase.storage().ref().child('Project 1').child('R001').child('employee').child(imageRef).getDownloadURL().then(function (url) {
+//                    imageData.push(url);
+//                    if (++count == imageRefs.length) {
+//                        generateReport("P001", "R001", snapshot.val());
+//                    }
+//                });
+//            }
+//        });
+
+    }
+</script>
+
+</body>
+</html>
