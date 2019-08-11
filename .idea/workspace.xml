@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d21e6535-008d-40a7-b369-263f0421e045" name="Default" comment="">
+    <list default="true" id="d21e6535-008d-40a7-b369-263f0421e045" name="Default" comment="Update 1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consultant.html" beforeDir="false" afterPath="$PROJECT_DIR$/consultant.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contractor.html" beforeDir="false" afterPath="$PROJECT_DIR$/contractor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/dashboard.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/consultant.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/consultant.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/contractor.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/contractor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/employee.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/employee.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,11 +18,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/employee.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4820">
+              <caret line="830" column="38" selection-start-line="830" selection-start-column="27" selection-end-line="830" selection-end-column="38" />
+              <folding>
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/contractor.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="364">
+              <caret line="194" column="18" lean-forward="true" selection-start-line="194" selection-start-column="18" selection-end-line="194" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/consultant.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2587">
-              <caret line="215" column="38" lean-forward="true" selection-start-line="215" selection-start-column="38" selection-end-line="215" selection-end-column="38" />
+            <state relative-caret-position="227">
+              <caret line="217" column="52" selection-start-line="217" selection-start-column="52" selection-end-line="217" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -34,6 +55,34 @@
                 <element signature="e#22100#22107#1" expanded="true" />
                 <element signature="e#31046#31053#1" expanded="true" />
                 <element signature="e#39260#39267#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/employee.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-514">
+              <caret line="979" column="9" selection-start-line="979" selection-start-column="9" selection-end-line="979" selection-end-column="9" />
+              <folding>
+                <element signature="e#510#1059#0" />
+                <element signature="e#1127#1521#0" />
+                <element signature="n#!!block;n#fillCatGrievanceTable#0" />
+                <element signature="n#!!block;n#fillPendingTable#0" />
+                <element signature="n#!!block;n#fillApprovedTable#0" />
+                <element signature="n#!!block;n#fillUserTable#0" />
+                <element signature="n#!!block;n#fillProjectTable#0" />
+                <element signature="n#!!block;n#fillProjectCombo#0" />
+                <element signature="n#!!block;n#fillNatureOfGrievance#0" />
+                <element signature="n#!!block;n#signout#0" />
+                <element signature="n#!!block;n#sendEmail#0" />
+                <element signature="n#!!block;n#remindConsultant#0" />
+                <element signature="n#!!block;n#fillCatOfGrievance#0" />
+                <element signature="n#!!block;n#getSelectedCategoriesOfGrievance#0" />
+                <element signature="n#!!block;n#getSelectedEditCategoriesOfGrievance#0" />
+                <element signature="n#!!block;n#clearComplaintForm#0" />
+                <element signature="n#!!block;n#generateReport#0" />
               </folding>
             </state>
           </provider>
@@ -68,8 +117,9 @@
       <find>#report</find>
       <find>report</find>
       <find>date</find>
-      <find>more-details-form</find>
       <find>pending-table</find>
+      <find>more-details-form</find>
+      <find>modal-title</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
@@ -86,11 +136,11 @@
         <option value="$PROJECT_DIR$/css/consultant.css" />
         <option value="$PROJECT_DIR$/test-upload.html" />
         <option value="$PROJECT_DIR$/css/dashboard.css" />
-        <option value="$PROJECT_DIR$/employee.html" />
         <option value="$PROJECT_DIR$/js/employee.js" />
-        <option value="$PROJECT_DIR$/contractor.html" />
         <option value="$PROJECT_DIR$/js/contractor.js" />
         <option value="$PROJECT_DIR$/js/consultant.js" />
+        <option value="$PROJECT_DIR$/employee.html" />
+        <option value="$PROJECT_DIR$/contractor.html" />
         <option value="$PROJECT_DIR$/consultant.html" />
       </list>
     </option>
@@ -169,18 +219,25 @@
       <workItem from="1522991598788" duration="8955000" />
       <workItem from="1523012511351" duration="752000" />
       <workItem from="1523083657611" duration="621000" />
-      <workItem from="1565501768748" duration="6454000" />
+      <workItem from="1565501768748" duration="7173000" />
     </task>
+    <task id="LOCAL-00001" summary="Update 1">
+      <created>1565509055955</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1565509055955</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16782000" />
+    <option name="totallyTimeSpent" value="17501000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24917382" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24917382" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -192,7 +249,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -201,6 +258,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 1" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/img/background.jpg">
@@ -248,31 +309,27 @@
     <entry file="file://$PROJECT_DIR$/css/index.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/employee.html">
+    <entry file="file://$PROJECT_DIR$/js/contractor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2928">
-          <caret line="210" column="101" selection-start-line="210" selection-start-column="101" selection-end-line="210" selection-end-column="101" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#52409#52416#1" expanded="true" />
-            <element signature="e#62728#62735#1" expanded="true" />
-            <element signature="e#73264#73271#1" expanded="true" />
-          </folding>
+        <state relative-caret-position="-298">
+          <caret line="314" column="79" lean-forward="true" selection-start-line="314" selection-start-column="79" selection-end-line="314" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/consultant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="390" column="62" lean-forward="true" selection-start-line="390" selection-start-column="49" selection-end-line="390" selection-end-column="62" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/employee.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1536">
-          <caret line="344" selection-start-line="344" selection-end-line="344" />
+        <state relative-caret-position="-514">
+          <caret line="979" column="9" selection-start-line="979" selection-start-column="9" selection-end-line="979" selection-end-column="9" />
           <folding>
             <element signature="e#510#1059#0" />
             <element signature="e#1127#1521#0" />
-            <element signature="e#7074#9797#0" />
-            <element signature="e#9851#10992#0" />
             <element signature="n#!!block;n#fillCatGrievanceTable#0" />
             <element signature="n#!!block;n#fillPendingTable#0" />
             <element signature="n#!!block;n#fillApprovedTable#0" />
@@ -292,31 +349,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/contractor.js">
+    <entry file="file://$PROJECT_DIR$/employee.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-298">
-          <caret line="314" column="79" lean-forward="true" selection-start-line="314" selection-start-column="79" selection-end-line="314" selection-end-column="79" />
+        <state relative-caret-position="-4820">
+          <caret line="830" column="38" selection-start-line="830" selection-start-column="27" selection-end-line="830" selection-end-column="38" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contractor.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="129" column="68" lean-forward="true" selection-start-line="129" selection-start-column="68" selection-end-line="129" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/consultant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="390" column="62" lean-forward="true" selection-start-line="390" selection-start-column="49" selection-end-line="390" selection-end-column="62" />
+        <state relative-caret-position="364">
+          <caret line="194" column="18" lean-forward="true" selection-start-line="194" selection-start-column="18" selection-end-line="194" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/consultant.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2587">
-          <caret line="215" column="38" lean-forward="true" selection-start-line="215" selection-start-column="38" selection-end-line="215" selection-end-column="38" />
+        <state relative-caret-position="227">
+          <caret line="217" column="52" selection-start-line="217" selection-start-column="52" selection-end-line="217" selection-end-column="52" />
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
