@@ -113,7 +113,7 @@ $('form#new-complaint-form').on('submit', function (e) {
 
     db.child('complaint').child(projectName).child(refNo).once('value').then(function (snapshot) {
         if (snapshot.exists()) {
-            alert('You already registered a complint under this reference number');
+            alert('You already registered a complaint under this reference number');
             $('#new-complaint-submit').attr('disabled', false);
         } else {
             db.child('complaint').child(projectName).child(refNo).set(complaint).then(function () {
@@ -321,37 +321,41 @@ $('form#search-complaints').on('submit', function (e) {
     e.preventDefault();
 
     let state = $('[name=sc-state]').val();
+    let startDate = new Date($('[name=start-date]').val()).getTime();
+    let endDate = new Date($('[name=end-date]').val()).getTime();
+    console.log(startDate, endDate);
 
     let body = [];
-    body.push(['Project', 'Ref No', 'Date', 'Name', 'Address', 'GN Division', 'NIC', 'Phone No', 'Nature of Grievance', 'Category of grievance', 'Signifcance', 'Reported By', ' Action', 'Date Reported', 'Consultant Solution', 'Contractor Solution']);
+    body.push(['Project', 'Ref No', 'Date', 'Name', 'Address', 'GN Division', 'Nature of Grievance', 'Category of grievance', 'Significance', 'Reported By', 'Action', 'Date Reported', 'Consultant Solution', 'Contractor Solution']);
     db.child('complaint').once('value').then((snapshot) => {
         let projects = snapshot.val();
         for (let project in projects) {
             for (let refNo in projects[project]) {
                 let complaint = projects[project][refNo];
                 if (complaint.state == state) {
-                    console.log(refNo, state, complaint.state);
-                    body.push([project,
-                        refNo,
-                        complaint.date,
-                        complaint.name,
-                        complaint.address,
-                        complaint.gsDivision,
-                        complaint.nicNo,
-                        complaint.phoneNo,
-                        complaint.natureOfGrievance,
-                        complaint.categoryOfGrievance,
-                        complaint.significance,
-                        complaint.actionTakenBy,
-                        complaint.action,
-                        complaint.dateReported,
-                        complaint.consultantSolution,
-                        complaint.contractorSolution]);
+                    let complaintDate = new Date(complaint.date).getTime()
+                    if (complaintDate >= startDate && complaintDate <= endDate) {
+                        body.push([
+                            project,
+                            refNo,
+                            complaint.date,
+                            complaint.name,
+                            complaint.address,
+                            complaint.gsDivision,
+                            complaint.natureOfGrievance,
+                            complaint.categoryOfGrievance ? complaint.categoryOfGrievance : [],
+                            complaint.significance,
+                            complaint.actionTakenBy,
+                            complaint.action,
+                            complaint.dateReported,
+                            complaint.consultantSolution,
+                            complaint.contractorSolution]);
+                    }
                 }
             }
         }
-        // let title = 'Employee Complaint System\nSummary of ' + ($("[name=sc-state] option:selected").text() + ' Complaints\n' + new Date().toDateString());
-        // tableReport(title, body, 'landscape', 'A3');
+        let title = 'Employee Complaint System\nSummary of ' + ($("[name=sc-state] option:selected").text() + ' Complaints\n' + new Date().toDateString());
+        tableReport(title, body, 'landscape', 'A3');
     })
 
 });
@@ -601,13 +605,13 @@ function fillPendingTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -619,7 +623,7 @@ function fillPendingTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -631,7 +635,7 @@ function fillPendingTable() {
                                     remindBtn.setAttribute('data-ref', id);
                                     remindBtn.addEventListener('click', (e) => remindConsultant(e.target));
 
-                                    let remindBtnCell = row.insertCell(11);
+                                    let remindBtnCell = row.insertCell(9);
                                     remindBtnCell.style.verticalAlign = 'middle';
                                     remindBtnCell.appendChild(remindBtn);
                                 }, 0);
@@ -669,13 +673,13 @@ function fillApproveRejectTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -687,7 +691,7 @@ function fillApproveRejectTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -701,7 +705,7 @@ function fillApproveRejectTable() {
                                     approveBtn.setAttribute('data-ref', id);
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let approveBtnCell = row.insertCell(11);
+                                    let approveBtnCell = row.insertCell(9);
                                     approveBtnCell.style.verticalAlign = 'middle';
                                     approveBtnCell.appendChild(approveBtn);
 
@@ -715,7 +719,7 @@ function fillApproveRejectTable() {
                                     rejectBtn.setAttribute('data-ref', id);
                                     rejectBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let rejectBtnCell = row.insertCell(12);
+                                    let rejectBtnCell = row.insertCell(10);
                                     rejectBtnCell.style.verticalAlign = 'middle';
                                     rejectBtnCell.appendChild(rejectBtn);
 
@@ -754,13 +758,13 @@ function fillApprovedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -772,7 +776,7 @@ function fillApprovedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
                                 }, 0);
@@ -810,13 +814,13 @@ function fillRejectedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -828,7 +832,7 @@ function fillRejectedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -843,7 +847,7 @@ function fillRejectedTable() {
                                     approveBtn.setAttribute('data-ref', id);
 
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    let approveBtnCell = row.insertCell(11);
+                                    let approveBtnCell = row.insertCell(9);
                                     approveBtnCell.style.verticalAlign = 'middle';
                                 }, 0);
                             }

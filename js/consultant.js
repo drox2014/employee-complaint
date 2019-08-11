@@ -412,12 +412,12 @@ function fillPendingTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -429,7 +429,7 @@ function fillPendingTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(9);
+                                    let moreDetailsBtnCell = row.insertCell(7);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -443,7 +443,7 @@ function fillPendingTable() {
                                     solveBtn.setAttribute('data-ref', id);
                                     solveBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let solveBtnCell = row.insertCell(10);
+                                    let solveBtnCell = row.insertCell(8);
                                     solveBtnCell.style.verticalAlign = 'middle';
                                     solveBtnCell.appendChild(solveBtn);
 
@@ -485,12 +485,12 @@ function fillSolvedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -502,7 +502,7 @@ function fillSolvedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(9);
+                                    let moreDetailsBtnCell = row.insertCell(7);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -516,7 +516,7 @@ function fillSolvedTable() {
                                     approveBtn.setAttribute('data-ref', id);
 
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    let approveBtnCell = row.insertCell(10);
+                                    let approveBtnCell = row.insertCell(8);
                                     approveBtnCell.style.verticalAlign = 'middle';
 
                                     approveBtnCell.appendChild(approveBtn);
@@ -530,7 +530,7 @@ function fillSolvedTable() {
 
                                     rejectBtn.setAttribute('data-ref', id);
                                     rejectBtn.addEventListener('click', (e) => fillForm(e.target));
-                                    let rejectBtnCell = row.insertCell(11);
+                                    let rejectBtnCell = row.insertCell(9);
 
                                     rejectBtnCell.style.verticalAlign = 'middle';
                                     rejectBtnCell.appendChild(rejectBtn);
@@ -572,12 +572,12 @@ function fillRejectedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -589,7 +589,7 @@ function fillRejectedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(9);
+                                    let moreDetailsBtnCell = row.insertCell(7);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -603,7 +603,7 @@ function fillRejectedTable() {
                                     solveBtn.setAttribute('data-ref', id);
                                     solveBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let solveBtnCell = row.insertCell(10);
+                                    let solveBtnCell = row.insertCell(8);
                                     solveBtnCell.style.verticalAlign = 'middle';
                                     solveBtnCell.appendChild(solveBtn);
 
@@ -618,7 +618,7 @@ function fillRejectedTable() {
                                     approveBtn.setAttribute('data-ref', id);
                                     approveBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let approveBtnCell = row.insertCell(11);
+                                    let approveBtnCell = row.insertCell(9);
                                     approveBtnCell.style.verticalAlign = 'middle';
                                     approveBtnCell.appendChild(approveBtn);
                                 }, 0);
@@ -659,13 +659,13 @@ function fillApprovedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(8).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     let moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -677,7 +677,7 @@ function fillApprovedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    let moreDetailsBtnCell = row.insertCell(10);
+                                    let moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
                                 }, 0);

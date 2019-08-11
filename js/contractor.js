@@ -146,13 +146,13 @@ function fillPendingTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     var moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -164,7 +164,7 @@ function fillPendingTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    var moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -178,7 +178,7 @@ function fillPendingTable() {
                                     solveButton.setAttribute('data-ref', id);
                                     solveButton.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var solveButtonCell = row.insertCell(11);
+                                    var solveButtonCell = row.insertCell(9);
                                     solveButtonCell.style.verticalAlign = 'middle';
                                     solveButtonCell.appendChild(solveButton);
                                 }, 0);
@@ -220,13 +220,13 @@ function fillRejectedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     var moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -238,7 +238,7 @@ function fillRejectedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    var moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
 
@@ -252,7 +252,7 @@ function fillRejectedTable() {
                                     solveButton.setAttribute('data-ref', id);
                                     solveButton.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var solveButtonCell = row.insertCell(11);
+                                    var solveButtonCell = row.insertCell(9);
                                     solveButtonCell.style.verticalAlign = 'middle';
                                     solveButtonCell.appendChild(solveButton);
                                 }, 0);
@@ -294,13 +294,13 @@ function fillApprovedTable() {
                                     row.insertCell(0).innerHTML = project;
                                     row.insertCell(1).innerHTML = refId;
                                     row.insertCell(2).innerHTML = complaint.date;
-                                    row.insertCell(3).innerHTML = complaint.nicNo;
-                                    row.insertCell(4).innerHTML = complaint.name;
-                                    row.insertCell(5).innerHTML = complaint.gsDivision;
-                                    row.insertCell(6).innerHTML = complaint.phoneNo;
-                                    row.insertCell(7).innerHTML = complaint.categoryOfGrievance;
-                                    row.insertCell(8).innerHTML = complaint.significance;
-                                    row.insertCell(9).innerHTML = complaint.actionTakenBy;
+                                    // row.insertCell(3).innerHTML = complaint.nicNo;
+                                    row.insertCell(3).innerHTML = complaint.name;
+                                    row.insertCell(4).innerHTML = complaint.gsDivision;
+                                    // row.insertCell(6).innerHTML = complaint.phoneNo;
+                                    row.insertCell(5).innerHTML = complaint.categoryOfGrievance;
+                                    row.insertCell(6).innerHTML = complaint.significance;
+                                    row.insertCell(7).innerHTML = complaint.actionTakenBy;
 
                                     var moreDetailsBtn = document.createElement('input');
                                     moreDetailsBtn.type = 'button';
@@ -312,7 +312,7 @@ function fillApprovedTable() {
                                     moreDetailsBtn.setAttribute('data-ref', id);
                                     moreDetailsBtn.addEventListener('click', (e) => fillForm(e.target));
 
-                                    var moreDetailsBtnCell = row.insertCell(10);
+                                    var moreDetailsBtnCell = row.insertCell(8);
                                     moreDetailsBtnCell.style.verticalAlign = 'middle';
                                     moreDetailsBtnCell.appendChild(moreDetailsBtn);
                                 }, 0);
@@ -354,6 +354,7 @@ function fillForm(target) {
     db.child('complaint').child(project).child(ref).once('value', function (snapshot) {
         var complaint = snapshot.val();
         if (complaint) {
+            console.log(complaint)
             $('[name=project-name]').val(project);
             $('[name=ref-no]').val(ref);
             $('[name=name]').val(complaint.name);
@@ -369,6 +370,7 @@ function fillForm(target) {
             $('[name=action]').val(complaint.action);
             $('[name=date-reported]').val(complaint.dateReported);
             $('[name=cons-solution]').val(complaint.consultantSolution);
+            $('[name=cont-solution]').val(complaint.contractorSolution);
             var url = 'slider.html?project=' + project + '&ref=' + ref + '&type=';
             $('[name=employee-link]').attr('href', url + 'employee');
             $('[name=consultant-link]').attr('href', url + 'consultant');
